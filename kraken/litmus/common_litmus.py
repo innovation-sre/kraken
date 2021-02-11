@@ -16,7 +16,7 @@ def install_litmus(version):
     runcommand.invoke("oc wait deploy -n litmus chaos-operator-ce --for=condition=Available")
 
 
-def deploy_all_experiments(version_string):
+def deploy_all_experiments(version_string, litmus_experiment_ns):
 
     if not version_string.startswith("v"):
         logging.error("Incorrect version string for litmus, needs to start with 'v' "
@@ -25,8 +25,8 @@ def deploy_all_experiments(version_string):
     version = version_string[1:]
 
     runcommand.invoke("kubectl apply -f "
-                      "https://hub.litmuschaos.io/api/chaos/%s?file=charts/generic/experiments.yaml"
-                      % version)
+                      "https://hub.litmuschaos.io/api/chaos/%s?file=charts/generic/experiments.yaml -n %s"
+                      % (version, litmus_experiment_ns))
 
 
 def delete_experiments():

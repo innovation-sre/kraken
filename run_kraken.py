@@ -294,6 +294,7 @@ def main(cfg):
         kubeconfig_path = config["kraken"].get("kubeconfig_path", "")
         chaos_scenarios = config["kraken"].get("chaos_scenarios", [])
         litmus_version = config['kraken'].get("litmus_version", 'v1.9.1')
+        litmus_experiment_ns = config['kraken'].get("litmus_experiment_ns", 'default')
         litmus_uninstall = config['kraken'].get("litmus_uninstall", False)
         wait_duration = config["tunings"].get("wait_duration", 60)
         iterations = config["tunings"].get("iterations", 1)
@@ -356,7 +357,7 @@ def main(cfg):
                         elif scenario_type == "litmus_scenarios":
                             if not litmus_installed:
                                 common_litmus.install_litmus(litmus_version)
-                                common_litmus.deploy_all_experiments(litmus_version)
+                                common_litmus.deploy_all_experiments(litmus_version, litmus_experiment_ns)
                                 litmus_installed = True
                             litmus_namespaces = litmus_scenarios(scenarios_list, config,
                                                                  litmus_namespaces,
